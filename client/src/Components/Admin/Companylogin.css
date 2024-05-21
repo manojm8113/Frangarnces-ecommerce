@@ -1,0 +1,6 @@
+.companyloginimg{
+    height: 300px;
+    width: 900px;
+    object-fit: contain;
+    backface-visibility: hidden;
+}

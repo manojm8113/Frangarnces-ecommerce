@@ -1,0 +1,36 @@
+.forgender{
+    height: 400px;
+    width: 600px;
+    cursor: pointer;
+}
+.forgender:hover{
+  opacity: 0.8;
+  -webkit-transform: scale(0.8);
+-ms-transform: scale(0.8);
+transform: scale(0.8);
+transition: 1s ease;
+}
+.container{
+    display: grid;
+    margin-top: 35px;
+}
+@media (max-width: 768px) {
+.forgender {
+  height: 400px;
+  width: 600px;
+  cursor: pointer;
+}
+
+.forgender:hover {
+  opacity: 0.8;
+  transform: scale(0.9);
+  transition: 0.3s ease; 
+}
+.container {
+  display: grid;
+  margin-top: 35px;
+}
+.forres{
+  margin-top: 85px;
+}
+}

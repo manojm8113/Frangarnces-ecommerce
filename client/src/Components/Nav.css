@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Sofia");
+@import url('https://fonts.cdnfonts.com/css/snell-bd-bt');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  list-style: none;
+}
+
+li {
+  text-decoration: none;
+  list-style: none;
+}
+
+.navbar {
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px; /* Adjusted height for better fit */
+  padding: 0 20px;
+  box-shadow: rgba(50, 50, 93, 0.23) 0 30px 30px -20px;
+  background-color: white;
+  z-index: 1000; /* Ensure the navbar stays on top */
+  position: sticky;
+}
+
+.logo {
+  font-size: 30px;
+  font-family: 'Sofia', sans-serif;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: flex-end;
+  width: 75%;
+}
+
+.nav-links li {
+  color: #111;
+  font-size: 18px; /* Adjusted font size for better fit */
+  padding: 0 10px;
+  margin: 0 10px;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.linkings {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: none;
+  background: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.mobile-menu-icon {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .logo {
+    position: absolute;
+    top: 15px;
+    left: 20px; /* Adjusted for better fit */
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .nav-links-mobile {
+    position: absolute;
+    display: block;
+    list-style: none;
+    box-shadow: rgba(50, 50, 93, 0.23) 0 30px 30px -20px;
+    left: 0;
+    top: 60px; /* Adjusted top position to match navbar height */
+    transition: all 0.5s ease-in-out;
+    width: 100%;
+    background: #fbf9f9;
+    opacity: 0.8;
+    color: #111;
+    padding: 0;
+    z-index: 1000; /* Ensure the mobile menu stays on top */
+  }
+
+  .nav-links-mobile li {
+    padding: 27px;
+    width: 100%;
+    transition: all 0.5s ease-in-out;
+    text-align: center;
+    font-size: 16px;
+    color: black;
+    margin-bottom: 25px;
+  }
+
+  .mobile-menu-icon {
+    display: block;
+    position: absolute;
+    right: 20px;
+  }
+}
+
+.forgender {
+  height: 400px;
+  width: 600px;
+  cursor: pointer;
+}
+
+.forgender:hover {
+  opacity: 0.8;
+  transform: scale(0.9);
+  transition: 0.3s ease; 
+}
+
+.container {
+  display: grid;
+  margin-top: 35px;
+}

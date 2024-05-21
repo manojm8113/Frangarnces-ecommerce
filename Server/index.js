@@ -1,0 +1,35 @@
+const express=require('express')
+const app=express()
+const mongoose=require('mongoose')
+const dotenv=require('dotenv')
+dotenv.config()
+const cors=require('cors')
+app.use(cors())
+const userRouter=require('./Router/UserRouter')
+const adminSignup=require('./Router/AdminsignRouter')
+const adminRouter=require('./Router/AdminRouter')
+const companyRouter=require('./Router/CompanyRouter')
+const login=require('./Router/login')
+const admin=require('./Router/Adminlogin')
+const company=require('./Router/Companylogin')
+const querys=require('./Router/QueryRouter')
+const carts=require('./Router/CartRouter')
+ const JWT=require('jsonwebtoken')
+mongoose.connect(process.env.MongoUrl).then(()=>{
+    console.log("database is connected");
+    }).catch((err)=>{
+        console.log("database is not connected");
+    })
+    app.use(express.json())
+    app.use("/userapis",userRouter)
+    app.use("/adminapis",adminRouter)
+    app.use("/logindatas",login)
+    app.use("/adminlogins",admin)
+    app.use("/adminsignup",adminSignup) 
+    app.use("/addcompany",companyRouter) 
+    app.use("/companylogin",company) 
+    app.use("/userquerys",querys) 
+    app.use("/usercart",carts) 
+app.listen(5000,()=>{
+    console.log("port is connected");
+})

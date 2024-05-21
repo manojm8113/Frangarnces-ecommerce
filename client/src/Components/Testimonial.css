@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Sofia");
+@import url('https://fonts.cdnfonts.com/css/snell-bd-bt');
+.testimonial-card .card-up {
+    height: 120px;
+    overflow: hidden;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+  }
+  .testimonial-card .avatar {
+    width: 110px;
+    margin-top: -60px;
+    overflow: hidden;
+    border: 3px solid #fff;
+    border-radius: 50%;
+  }
+  .py-5{
+    border: 1px solid black;
+    margin-bottom: 25px;
+  }
+  .staricons{
+    color: yellow;
+  }
+  #testimoni{
+    font-family:"Sofia", sans-serif;
+  }
