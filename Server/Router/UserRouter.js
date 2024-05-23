@@ -49,13 +49,15 @@ res.status(200).json(datas)
 res.status(500).json("failed")
 }
 })
-router.put('/updateData/:id',verifyToken,async(req,res)=>{
-    console.log("req.query",req.params.id);
-    try{
-        const updteDetails=await user.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
-        res.status(200).json(updteDetails)
-    }catch(err){
-        res.status(500).json("error")
+router.put('/updateData/:id', verifyToken, async (req, res) => {
+    console.log("Token:", req.headers.authorization);
+    console.log("req.params.id", req.params.id);
+    try {
+        const updatedDetails = await user.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+        res.status(200).json(updatedDetails);
+    } catch (err) {
+        res.status(500).json("error");
     }
-})
+});
+
 module.exports=router

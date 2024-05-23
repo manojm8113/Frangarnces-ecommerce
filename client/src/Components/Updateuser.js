@@ -1,42 +1,47 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Getmyprofile, UpdateMydata } from './Api';
-import './Updateuser.css'
+import './Updateuser.css';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
+
 const Updateuser = () => {
   const [info, setInfo] = useState(null);
   const Data = useSelector((state) => state.login.LoginInformation[0]);
-  let id;
-  if (Data) {
-    id = Data.id;
-  }
+  const id = Data?.id;
+
   const [Username, setUsername] = useState('');
   const [Email, setEmail] = useState('');
   const [Phone, setPhone] = useState('');
   const [Address, setAddress] = useState('');
   const [Pincode, setPincode] = useState('');
+
   useEffect(() => {
     async function display() {
-      const myData = await Getmyprofile(id);
-      setInfo(myData);
-      // Set initial state
-      setUsername(myData.Username);
-      setEmail(myData.Email);
-      setPhone(myData.Phone);
-      setAddress(myData.Address);
-      setPincode(myData.Pincode);
+      if (id) {
+        const myData = await Getmyprofile(id);
+        setInfo(myData);
+        setUsername(myData.Username);
+        setEmail(myData.Email);
+        setPhone(myData.Phone);
+        setAddress(myData.Address);
+        setPincode(myData.Pincode);
+      }
     }
-    if (id) {
-      display();
-    }
+    display();
   }, [id]);
 
-  async function update() {
-    console.log("first check", Username, Email, Phone, Address, Pincode, id);
-    await UpdateMydata({ Username, Email, Phone, Address, Pincode }, id);
-  }
+  const update = async () => {
+    console.log("Updating with", { Username, Email, Phone, Address, Pincode }, id);
+    try {
+      await UpdateMydata({ Username, Email, Phone, Address, Pincode }, id);
+      alert("Profile updated successfully!");
+    } catch (error) {
+      console.error("Update error:", error);
+      alert("Failed to update profile.");
+    }
+  };
 
   return (
     <div>
@@ -119,6 +124,6 @@ const Updateuser = () => {
       <Footer />
     </div>
   );
-}
+};
 
 export default Updateuser;
