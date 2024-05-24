@@ -85,16 +85,7 @@ export const Getuserdetails=async(id)=>{
     }
 }
 // ****** End *******
-// users querys *******
-export const Getuserquerys=async()=>{
-    try{
-        const Getprofile=await TokenRequest.get('/userquerys/Getquery')
-        console.log("user profile information",Getprofile);
-        return Getprofile.data
-    }catch(err){
-        console.log(err.message);
-    }
-}
+
 // company details ********
 export const Getcompanydetails=async()=>{
     try{

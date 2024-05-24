@@ -12,7 +12,7 @@ const companyRouter=require('./Router/CompanyRouter')
 const login=require('./Router/login')
 const admin=require('./Router/Adminlogin')
 const company=require('./Router/Companylogin')
-const querys=require('./Router/QueryRouter')
+const Query=require('./Router/QueryRouter')
 const carts=require('./Router/CartRouter')
  const JWT=require('jsonwebtoken')
 mongoose.connect(process.env.MongoUrl).then(()=>{
@@ -28,7 +28,7 @@ mongoose.connect(process.env.MongoUrl).then(()=>{
     app.use("/adminsignup",adminSignup) 
     app.use("/addcompany",companyRouter) 
     app.use("/companylogin",company) 
-    app.use("/userquerys",querys) 
+    app.use("/userquerys",Query) 
     app.use("/usercart",carts) 
 app.listen(5000,()=>{
     console.log("port is connected");
