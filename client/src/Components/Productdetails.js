@@ -29,7 +29,6 @@ const Productdetails = () => {
     const Cartids = useSelector((state) => state.login.LoginInformation?.[0]);
       if (Cartids) {
         var Userid=Cartids.id
-
       }
       console.log(Userid);
     const handleFileChange = (event) => {
@@ -51,7 +50,7 @@ const Productdetails = () => {
         if (response.data.status === 'ok') {
           alert('Product added to cart');
         } else {
-          alert('Failed to add product to cart');
+          alert('Successfully add product to cart');
         }
       } catch (error) {
         console.error('Error adding to cart:', error);

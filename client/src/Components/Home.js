@@ -22,7 +22,6 @@ import Col from 'react-bootstrap/Col';
 import Footer from './Footer';
 import Testimonial from './Testimonial';
 import { Link } from 'react-router-dom';
-import Products from './Products';
 const Home = () => {
   return (
     <div>
@@ -162,7 +161,7 @@ const Home = () => {
               <img class="img-fluid" loading="lazy" src={product8} alt=""/>
               <figcaption class="m-0 p-4">
                 <h4 class="mb-1">Nuit de Noel</h4>
-                <Link to={'/Produ'}><button className='btn btn-secondary'>View More</button></Link>
+                <Link to={'/Prod'}><button className='btn btn-secondary'>View More</button></Link>
               </figcaption>
             </figure>
           </div>

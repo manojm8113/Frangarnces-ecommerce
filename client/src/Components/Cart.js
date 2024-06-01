@@ -11,11 +11,8 @@ import {
   MDBContainer,
   MDBIcon,
   MDBInput,
-  MDBListGroup,
-  MDBListGroupItem,
   MDBRipple,
   MDBRow,
-  MDBAlert,
   MDBTypography,
 } from 'mdb-react-ui-kit';
 import axios from 'axios';
@@ -38,14 +35,11 @@ const Cart = () => {
         const Userid = MyData.id;
         try {
           const result = await axios.get('http://localhost:5000/usercart/getproduct', { params: { Userid } });
-          setCartSize(result.data.length);
-          setAllProduct(result.data);
-          let total = 0;
-          result.data.forEach(item => {
-            total += item.offerprice;
-          });
-          setCount(result.data.length);
-          setTotalPrice(total);
+          const productsWithQuantity = result.data.map(product => ({ ...product, quantity: 1 }));
+          setCartSize(productsWithQuantity.length);
+          setAllProduct(productsWithQuantity);
+          calculateTotalPrice(productsWithQuantity);
+          setCount(productsWithQuantity.length);
         } catch (err) {
           console.log(err);
           setError('Failed to fetch cart items. Please try again later.');
@@ -54,25 +48,63 @@ const Cart = () => {
       fetchCart();
     }
   }, [MyData]);
+
   const handleRemove = async (id) => {
     try {
       const response = await axios.delete(`http://localhost:5000/usercart/removecart/${id}`);
       console.log(response.data);
-      // Update the frontend state to reflect the removal
       const updatedProducts = allProduct.filter(product => product.id !== id);
       setAllProduct(updatedProducts);
       setCartSize(updatedProducts.length);
-      let total = 0;
-      updatedProducts.forEach(item => {
-        total += item.offerprice;
-      });
-      setTotalPrice(total);
+      calculateTotalPrice(updatedProducts);
       setError('');
     } catch (err) {
       console.log(err);
       setError('Failed to remove the item. Please try again later.');
     }
   };
+
+  const handleQuantityChange = (id, quantity) => {
+    const updatedProducts = allProduct.map(product => {
+      if (product.id === id) {
+        return { ...product, quantity: quantity };
+      }
+      return product;
+    });
+    setAllProduct(updatedProducts);
+    calculateTotalPrice(updatedProducts);
+  };
+  
+  const handleIncrement = (id) => {
+    const updatedProducts = allProduct.map(product => {
+      if (product.id === id) {
+        return { ...product, quantity: product.quantity + 1 };
+      }
+      return product;
+    });
+    setAllProduct(updatedProducts);
+    calculateTotalPrice(updatedProducts);
+  };
+  
+  const handleDecrement = (id) => {
+    const updatedProducts = allProduct.map(product => {
+      if (product.id === id && product.quantity > 1) {
+        return { ...product, quantity: product.quantity - 1 };
+      }
+      return product;
+    });
+    setAllProduct(updatedProducts);
+    calculateTotalPrice(updatedProducts);
+  };
+
+  const calculateTotalPrice = (products) => {
+    let total = 0;
+    products.forEach(item => {
+      total += item.offerprice * item.quantity;
+    });
+    setTotalPrice(total);
+  };
+
   return (
     <div>
       <Navbar />
@@ -85,69 +117,86 @@ const Cart = () => {
               </MDBTypography>
             </MDBCol>
           </MDBRow>
-          {allProduct.map((product) => (
-            <MDBRow className="justify-content-center mb-4" key={product.id}>
+          {allProduct.length > 0 ? (
+            allProduct.map((product) => (
+              <MDBRow className="justify-content-center mb-4" key={product.id}>
+                <MDBCol md="8">
+                  <MDBCard className="mb-4">
+                    <MDBCardHeader className="py-3 d-flex justify-content-between">
+                      <MDBTypography tag="h5" className="mb-0">
+                        {product.productname}
+                      </MDBTypography>
+                      <MDBBtn color="danger" size="sm" onClick={() => handleRemove(product._id)}>
+                        Remove
+                      </MDBBtn>
+                    </MDBCardHeader>
+                    <MDBCardBody>
+                      <MDBRow>
+                        <MDBCol lg="3" md="12" className="mb-4 mb-lg-0">
+                          <MDBRipple rippleTag="div" rippleColor="light" className="bg-image rounded hover-zoom hover-overlay">
+                            <img
+                              src={require(`../Images/${product.image}`)}
+                              className="card-img-top"
+                              alt={product.productname}
+                            />
+                            <a href="#!">
+                              <div className="mask" style={{ backgroundColor: 'rgba(251, 251, 251, 0.2)' }}></div>
+                            </a>
+                          </MDBRipple>
+                        </MDBCol>
+                        <MDBCol lg="5" md="6" className="mb-4 mb-lg-0">
+                          <p>
+                            <strong>{product.productname}</strong>
+                          </p>
+                          <p className="text-muted">Price: ${product.offerprice.toFixed(2)}</p>
+                        </MDBCol>
+                        <MDBCol lg="4" md="6" className="mb-4 mb-lg-0">
+                          <div className="d-flex mb-4" style={{ maxWidth: '300px' }}>
+                            <MDBBtn className="px-3 me-2" onClick={() => handleDecrement(product.id)}>
+                              <MDBIcon fas icon="minus" />
+                            </MDBBtn>
+                            <MDBInput 
+                              value={product.quantity} 
+                              min={1} 
+                              type="number" 
+                              label="Quantity" 
+                              onChange={(e) => handleQuantityChange(product.id, parseInt(e.target.value))} 
+                            />
+                            <MDBBtn className="px-3 ms-2" onClick={() => handleIncrement(product.id)}>
+                              <MDBIcon fas icon="plus" />
+                            </MDBBtn>
+                          </div>
+                          <p className="text-start text-md-center">
+                            <strong>Total: ${(product.offerprice * product.quantity).toFixed(2)}</strong>
+                          </p>
+                        </MDBCol>
+                      </MDBRow>
+                    </MDBCardBody>
+                  </MDBCard>
+                </MDBCol>
+              </MDBRow>
+            ))
+          ) : (
+            <MDBTypography tag="h5" className="text-center">
+              Your cart is empty.
+            </MDBTypography>
+          )}
+          {allProduct.length > 0 && (
+            <MDBRow className="justify-content-center">
               <MDBCol md="8">
                 <MDBCard className="mb-4">
-                  <MDBCardHeader className="py-3 d-flex justify-content-between">
-                    <MDBTypography tag="h5" className="mb-0">
-                      {product.productname}
-                    </MDBTypography>
-                    <MDBBtn color="danger" size="sm" onClick={() => handleRemove(product._id)}>
-                      Remove
-                    </MDBBtn>
-                  </MDBCardHeader>
                   <MDBCardBody>
-                    <MDBRow>
-                      <MDBCol lg="3" md="12" className="mb-4 mb-lg-0">
-                        <MDBRipple rippleTag="div" rippleColor="light" className="bg-image rounded hover-zoom hover-overlay">
-                          <img
-                            src={require(`../Images/${product.image}`)}
-                            className="card-img-top"
-                            alt={product.productname}
-                          />
-                          <a href="#!">
-                            <div className="mask" style={{ backgroundColor: 'rgba(251, 251, 251, 0.2)' }}></div>
-                          </a>
-                        </MDBRipple>
-                      </MDBCol>
-                      <MDBCol lg="5" md="6" className="mb-4 mb-lg-0">
-                        <p>
-                          <strong>{product.productname}</strong>
-                        </p>
-                        <p className="text-muted">Price: ${product.offerprice.toFixed(2)}</p>
-                      </MDBCol>
-                      <MDBCol lg="4" md="6" className="mb-4 mb-lg-0">
-                        <div className="d-flex mb-4" style={{ maxWidth: '300px' }}>
-                          <MDBBtn className="px-3 me-2">
-                            <MDBIcon fas icon="minus" />
-                          </MDBBtn>
-                          <MDBInput defaultValue={1} min={1} type="number" label="Quantity" />
-                          <MDBBtn className="px-3 ms-2">
-                            <MDBIcon fas icon="plus" />
-                          </MDBBtn>
-                        </div>
-                        <p className="text-start text-md-center">
-                          <strong>Total: ${product.offerprice.toFixed(2)}</strong>
-                        </p>
-                      </MDBCol>
-                    </MDBRow>
+                    <MDBTypography tag="h5" className="text-center mb-4">
+                      Total Price: ${price.toFixed(2)}
+                    </MDBTypography>
+                    <MDBBtn block size="lg" onClick={() => navigate('/checkout')} className='btn btn-dark'>
+                      Go to checkout
+                    </MDBBtn>
                   </MDBCardBody>
                 </MDBCard>
               </MDBCol>
             </MDBRow>
-          ))}
-          <MDBRow className="justify-content-center">
-            <MDBCol md="8">
-              <MDBCard className="mb-4">
-                <MDBCardBody>
-                  <MDBBtn block size="lg" onClick={() => navigate('/checkout')} className='btn btn-dark'>
-                    Go to checkout
-                  </MDBBtn>
-                </MDBCardBody>
-              </MDBCard>
-            </MDBCol>
-          </MDBRow>
+          )}
           <MDBRow className="justify-content-center">
             <MDBCol md="8">
               <MDBCard className="mb-4 mb-lg-0">

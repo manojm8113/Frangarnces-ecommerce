@@ -7,7 +7,6 @@ import Signup from './Components/Signup';
 import Login from './Components/Login';
 import Contactform from './Components/Contactform';
 import Userprofile from './Components/Userprofile';
-import Products from './Components/Products';
 import Addproduct from './Components/Admin/Addproduct';
 import Usersprofile from './Components/Admin/Usersprofile';
 import Updateuser from './Components/Updateuser';
@@ -68,10 +67,6 @@ const App = () => {
     {
       path: 'about',
       element: token ?<About />:<Login/>
-    },
-    {
-      path: 'products',
-      element:token ? <Products />:<Login/>
     },
     {
       path: 'contact',
